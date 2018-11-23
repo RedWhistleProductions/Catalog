@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+</head>
+
+<!-- Form validation messages -->
+{% with Errors = get_flashed_messages() %}
+{% if Errors %}
+{% for Error in Errors %}
+<strong>{{Error}}</strong>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- Local Log_In -->
+<form class='Center' name="Log_In" id="Log_In" method="POST" action="{{url_for('Log_In')}}">
+    <h1>Please Sign In</h1>
+    <table class='Center'>
+        <tr>
+            <td><label>User Name</label></td>
+            <td><input name="User_Name"></td>
+        </tr>
+        <tr>
+            <td><label>Password</label></td>
+            <td><input type="password" name="Password"></td>
+        </tr>
+    </table>
+    <input type="submit" value="Log In">
+</form>
+<!-- End Local Log_In -->
+<hr>
+{% include 'Google_Sign_In.html' %}
+
+</body>
+</html>

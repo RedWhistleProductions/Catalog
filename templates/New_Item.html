@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	</head>
+	
+	<body>
+		<h1> Add a new Item. </a>
+		<h2><b>Note: You must fill in the Category and Name fields</b></h2>
+			<table>
+				<form name="New_Item" method="POST" action="{{url_for(
+					'New_Item', Flask_Session = Flask_Session)}}" enctype="multipart/form-data">
+					<tr>
+						<td><label>Category</label></td>
+						<td><input name = "Category"></td>
+					</tr>
+
+					<tr>
+						<td><label>Item</label></td>
+						<td><input name = "Name"></td>
+					</tr>
+
+					<tr>
+						<td><label>Description</label></td>
+						<td><textarea name = "Description" ></textarea></td>
+					</tr>
+
+					<tr>
+						<td><label>Image File</label></td>
+						<td><input name = "file" type="file" accept="image/*"></td>
+					</tr>
+
+					<tr>
+						<td><input value = "Submit" type = "Submit"></td>
+					</tr>
+				</form>
+			</table>
+	</body>
+</html>

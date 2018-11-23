@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+	font-family: 'Fredoka One', cursive;
+
+}
+
+body{
+    max-width: 950;
+    background-color: DarkCyan;
+	margin: auto;
+	padding-top: 20px;
+}
+
+H1{
+    font-size: 50pt;
+
+}
+
+.Center{
+    text-align: center;
+    margin: auto;
+
+}
+
+.Item{
+	border: 3px solid #6d27e1 !important;
+	width: 80%;
+	padding: 5%;
+	margin-top: 5%;
+	margin-bottom: 5%;
+	margin-left: 10%;
+}
+
+.Tab{
+    display:inline-block;
+    width: 50px;
+}
+
+.Thumbnail{
+    max-width: 100%;
+    height: auto;
+}

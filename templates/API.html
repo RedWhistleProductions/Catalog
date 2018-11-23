@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Program Interface</title>
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+</head>
+<body>
+<H2>List of available Commands and their syntax</H2><br>
+
+<h4>
+    <code>
+        /API/item_by_type/< string Category ><br>
+        Returns a list of items in Category<br><br>
+
+        /API/item_by_user/< string User_Name ><br>
+        Returns a list of items owned by User_Name<br><br>
+
+        /API/item_by_id/< Int Item_ID ><br>
+        Returns an item specified by it's Item_ID<br>
+    </code>
+</h4>
+</body>
+</html>

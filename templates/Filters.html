@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>Filters</title>
+		<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+
+	</head>
+	
+	<body>
+		<div name ="Users">
+			<h2>Users</h2>
+			<h3>
+				{% if Users != [] %}
+					{% for Person in Users %}
+                <a href="{{url_for('Display_Item_By_User', User_ID = Person.ID, User_Name = Person.User_Name)}}"
+                   target="Main">{{Person.User_Name}}
+
+                </a><br>
+					{% endfor %}
+				{% endif %}
+			</h3>
+		</div>
+		
+		<div name = "Categorys">
+			<h2>Categorys</h2>
+			<h3>
+				{% if Categorys != [] %}
+					{% for I in Categorys %}
+						<a href = "{{url_for('Display_Item_By_Type', Item_Type = I.Category)}}" target = "Main" >{{I.Category}}</a><br>
+					{% endfor %}
+				{% else %}
+					The Database is empty. You can add items by clicking the [New Item] button,
+					or you can use Populate.py to put in fake data.
+				{% endif %}
+			</h3>
+		</div>
+	</body>
+</html>

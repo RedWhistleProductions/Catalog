@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+	</head>
+	
+	<body>
+		<h2>{{User_Name}}
+		</h2>
+
+		<h3>
+			{% if Query != None %}
+                {% for Thing in Query %}
+                    <div class="Item">
+                        Category:<br>
+                            <span class="Tab"></span>{{Thing.Category }} <br>
+
+                        Item:<br>
+                            <span class="Tab"></span>{{ Thing.Name }} <br>
+
+                            {% if Thing.Image != None and Thing.Image != "" %}
+								<image class="Thumbnail" src={{"/static/{}".format(Thing.Image)}}><br>
+							{% endif %}
+
+
+							{% if Thing.Description != "" %}
+                                Description:<br>
+                                <span class="Tab"></span>{{Thing.Description}}<br>
+                            {% endif %}
+
+                        {% if Flask_Session["User_ID"] == Thing.Owner_ID %}
+                            <a href = "{{ url_for('Item_Editor', Item_ID = Thing.ID)}}">
+                                (edit)
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {{User_Name}} doesn&apos;t have any Items.
+            {% endif %}
+        </h3>
+	</body>
+</html>

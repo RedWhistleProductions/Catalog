@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Item Catalog</title>
+        <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+        <script>
+			if (top.location!= self.location) {
+				top.location.href = self.location.href;
+			}
+
+
+        </script>
+
+
+    </head>
+	
+	<body>
+    <!-- Display Error Messages -->
+    {% with Errors = get_flashed_messages() %}
+    {% if Errors %}
+    {% for Error in Errors %}
+    {{Error}}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+        <center><img src="{{url_for('static', filename= 'RWP_Logo.png')}}"></center>
+		<h1 class="Center">Item Catalog</h1>
+		<h2 class="Center">To access the site, please <a href = "{{url_for('Log_In')}}">log in</a> or <a href = "{{url_for('Register')}}">sign up</a>.</h2>
+	</body>
+</html>
