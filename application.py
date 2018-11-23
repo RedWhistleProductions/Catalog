@@ -5,6 +5,7 @@ from Authentication import *
 import platform
 import Google_Oauth2
 import fleep
+from werkzeug.utils import secure_filename
 from titlecase import titlecase
 
 app = Flask(__name__)
@@ -98,7 +99,9 @@ def Add_Item(Owner_ID, Name, Category, Description="", Image=""):
         Required arguments: Owner_ID, Name, Category
         Optional arguments: Description, Image
     '''
-    New_Item = Item(Owner_ID=Owner_ID, Name=titlecase(Name), Category=titlecase(Category),
+    New_Item = Item(Owner_ID=Owner_ID,
+                    Name=titlecase(Name),
+                    Category=titlecase(Category),
                     Description=Description, Image=Image)
     Session.add(New_Item)
     Session.commit()
@@ -184,7 +187,8 @@ def Display_Item():
             Owner_ID:{}
             Category:{}
             Name:{}
-            Description:{}'''.format(
+            Description:{}
+            Image:{}'''.format(
             item.Owner.User_Name,
             item.Owner_ID,
             item.Category,
@@ -322,8 +326,8 @@ def Profile_Editor():
             Query.Last = request.form['Last']
         if request.form['Email'] != "":
             Query.Email = request.form['Email']
-        if request.form['Password_1'] != "" and request.form['Password_2'] and \
-                request.form['Password_1'] == request.form['Password_2']:
+        if request.form['Password_1'] != "" and request.form['Password_2'] \
+                and request.form['Password_1'] == request.form['Password_2']:
             Query.Password = Create_Hash(request.form['Password_1'])
         Session.add(Query)
         flash("Your profile has been updated.")
@@ -349,8 +353,8 @@ def Delete_Profile():
 @app.route('/Log_In/', methods=['GET', 'POST'])
 def Log_In(
     DATA_SCOPE="openid email",
-    Client_Secret="Item-Catalog-Google-Oauth.json",
-    data_Approvalprompt="force"):
+        Client_Secret="Item-Catalog-Google-Oauth.json",
+        data_Approvalprompt="force"):
 
     if request.method == "POST":
         try:
@@ -458,8 +462,13 @@ def Item_Editor(Item_ID):
     if request.method == 'POST':
         file_list = request.files.getlist('file')[0]
         image_path = upload(file_list)
-        if Query.Image is not "" and Query.Image is not None:
-            delete_file(Query.Image)
+        if image_path is not "" and image_path is not None:
+            # check to see if user changed the photo
+            if Query.Image is not "" and Query.Image is not None:
+                # if the photo is being changed, delete the old one
+                delete_file(Query.Image)
+        else:
+            image_path = Query.Image
 
         Edit_Item(
             Query.ID,
@@ -534,9 +543,10 @@ def api_item_by_type(Item_Type):
 '''Functions for File processing'''
 
 
-def good_file(File, Allowed_Type = "raster-image"):
+def good_file(File, Allowed_Type="raster-image"):
     """
-    checks the magic number of File and returns True if File matches the Allowed_Type
+    checks the magic number of File and returns
+    True if File matches the Allowed_Type
     File is a file
     Allowed_Type is one of the following types:
         "3d-image":
@@ -544,7 +554,8 @@ def good_file(File, Allowed_Type = "raster-image"):
         "archive":
             7Z, DMG, GZ, ISO, RAR, TAR.Z,ZIP
         "audio":
-            .AAC, .AC3, .AIFF, .AMR, .AU, .FLAC, .M4A, .MIDI, .MKA, .MP3, .OGA, .RA, .VOC, .WAV, .WMA
+            .AAC, .AC3, .AIFF, .AMR, .AU, .FLAC, .M4A,
+            .MIDI, .MKA, .MP3, .OGA, .RA, .VOC, .WAV, .WMA
         "database":
             .SQLITE,
         "document":
@@ -557,27 +568,30 @@ def good_file(File, Allowed_Type = "raster-image"):
         "raster-image":
             .BMP, .GIF, .ICO, .JP2, .JPEG, .PNG, .PSD, .TIFF, .WEBP
         "raw-image":
-            .ARW, .CR2, .CRW, .DNG, .ERF, .NEF, .NRW, .ORF, .PEF, .RAF, .RAW, .RW2, .SRW, .X3F
+            .ARW, .CR2, .CRW, .DNG, .ERF, .NEF, .NRW,
+            .ORF, .PEF, .RAF, .RAW, .RW2, .SRW, .X3F
         "system":
             .CAB, .CAT, .DLL, .DRV, .REG, .SDB, .SYS
         "vector-image":
             .AI, .EPS
         "video":
-            .3G2, .3GP, .ASF, .AVI, .FLV, .M4V, .MKV, .MOV, .MP4, .MPG, .OGV, .SWF, .VOB, .WEBM, .WMV
+            .3G2, .3GP, .ASF, .AVI, .FLV, .M4V, .MKV,
+            .MOV, .MP4, .MPG, .OGV, .SWF, .VOB, .WEBM, .WMV
     """
     info = fleep.get(File.read(128))
-    
+    # reset the file so that the file gets saved correctly
+    File.seek(0, 0)
     print(info.type)
     print(info.extension)
     print(info.mime)
     return info.type_matches(Allowed_Type)
 
 
-def upload(file, subfolder = 'static/'):
+def upload(file, subfolder='./static', file_type="raster-image"):
     """
-    Scans the magic number of a user uploaded file to make sure it is an image file
-    if it is then upload saves the file and returns the path on the server to the image
-    otherwise it returns None
+    Scans the magic number of a user uploaded file to make sure it is an image
+    file if it is then upload saves the file and returns the path on the server
+    to the image otherwise it returns None
     """
     target = os.path.join(APP_ROOT, subfolder)
     print(target)
@@ -585,32 +599,29 @@ def upload(file, subfolder = 'static/'):
     if not os.path.isdir(target):
         os.mkdir(target)
 
-    print(file)
-    filename = file.filename
-    destination = "/".join([target, filename])
+    file_name = secure_filename(file.filename)
+    print(file_name)
+    destination = "/".join([target, file_name])
+    # destination = target + file_name
     print(destination)
-    file.save(destination)
 
-    return filename
-    '''
-    if good_file(file, "raster-image"):
-        
+    if good_file(file, file_type):
+        file.save(destination)
+        return file_name
     else:
         print("That File Type is not allowed")
         return None
-    '''
 
 
-def delete_file(file, subfolder = 'static/'):
+def delete_file(file_name, subfolder='static/'):
     target = os.path.join(APP_ROOT, subfolder)
-    path = target + file
+    path = target + file_name
     os.remove(path)
 
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.debug = True
-    #APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     APP_ROOT = os.path.dirname(sys.modules['__main__'].__file__)
     Google_Oauth2.init(app, Flask_Session, "Item-Catalog-Google-Oauth.json")
 
