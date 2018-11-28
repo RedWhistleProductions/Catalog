@@ -3,13 +3,23 @@ Note:
 	repo, but I have left it in for the sake of simplifing install since this
 	app is for educational purposes and not ment to be used comercially.
 
-Setup instructions:
+Dependencies:
 
+	Setup instructions:
+		Python 3
+        SQL Alchemy
+        Flask
+        fleep
+        titlecase
+        passlib.hash
+        oauth2client.client
+	sudo SetUp.sh
+	
     Install all of the dependencies:
         Python 3
         SQL Alchemy
         Flask
-        Fleep
+        fleep
         titlecase
         passlib.hash
         oauth2client.client
