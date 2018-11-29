@@ -1,7 +1,9 @@
 Note:
 	Normally for security purposes I would not leave the Oauth key in a public
-	repo, but I have left it in for the sake of simplifing install since this
-	app is for educational purposes and not ment to be used comercially.
+	repo, but I have left it in for the sake of simplifying install since this
+	app is for educational purposes and not meant to be used commercially.
+
+	This application must be run with Python 3
 
 Dependencies:
 
@@ -28,11 +30,11 @@ Dependencies:
 
     Optionally
         you can run Populate.py to add some fake profiles for viewing purposes the passwords
-        The logins and passwords for each fake user is in plane text in the file
+        The log-ins and passwords for each fake user is in plane text in the file
 
     Run Application.py to start the Flask server
 
-    Access the webpage at http:\\LocalHost:8000
+    Access the web page at http:\\LocalHost:8000
 
 Admin Mode
     For security purposes all users are restricted to editing their own items and profiles in the website.

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 sudo apt-get update
 sudo apt-get install Python3
 sudo apt-get install python3-pip

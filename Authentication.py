@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from passlib.hash import pbkdf2_sha256
 from flask import session as Flask_Session
 import random
