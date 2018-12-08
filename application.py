@@ -12,12 +12,12 @@ from titlecase import titlecase
 app = Flask(__name__)
 
 try:
-    print("Loading Database Catalog.db ...")
-    Engine = create_engine('sqlite:///Catalog.db')
+    #print("Loading Database Catalog.db ...")
+    Engine = create_engine('postgresql:///catalog')
     Base.metadata.bind = Engine
     DBSession = sessionmaker(bind=Engine)
     Session = DBSession()
-    print("Database loading complete")
+    #print("Database loading complete")
 
 except:
     print("The Database could not be loaded. "
@@ -445,7 +445,7 @@ def New_Item():
             file_list = request.files.getlist('file')[0]
             image_path = upload(file_list)
 
-            print(image_path)
+            #print(image_path)
             Add_Item(
                 Flask_Session['User_ID'],
                 request.form['Name'],
@@ -582,9 +582,10 @@ def good_file(File, Allowed_Type="raster-image"):
     info = fleep.get(File.read(128))
     # reset the file so that the file gets saved correctly
     File.seek(0, 0)
+    '''
     print(info.type)
     print(info.extension)
-    print(info.mime)
+    print(info.mime)'''
     return info.type_matches(Allowed_Type)
 
 
@@ -595,16 +596,16 @@ def upload(file, subfolder='./static', file_type="raster-image"):
     to the image otherwise it returns None
     """
     target = os.path.join(APP_ROOT, subfolder)
-    print(target)
+    #print(target)
 
     if not os.path.isdir(target):
         os.mkdir(target)
 
     file_name = secure_filename(file.filename)
-    print(file_name)
+    #print(file_name)
     destination = "/".join([target, file_name])
     # destination = target + file_name
-    print(destination)
+    #print(destination)
 
     if good_file(file, file_type):
         file.save(destination)

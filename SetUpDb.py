@@ -14,7 +14,7 @@ class User(Base):
 
     ID = Column(Integer, primary_key=True)
     User_Name = Column(String(25), nullable=False)
-    Password = Column(String(25), nullable=False)
+    Password = Column(String(88), nullable=False)
     First = Column(String(25), nullable=False)
     Last = Column(String(25), nullable=False)
     Email = Column(String(25), nullable=False)
@@ -53,7 +53,7 @@ class Item(Base):
 
 
 def Create_Data_Base():
-    Engine = create_engine('sqlite:///Catalog.db')
+    Engine = create_engine('postgresql:///catalog')
     Base.metadata.create_all(Engine)
 
 
