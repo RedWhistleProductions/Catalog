@@ -13,12 +13,12 @@ class User(Base):
     __tablename__ = 'User'
 
     ID = Column(Integer, primary_key=True)
-    User_Name = Column(String(25), nullable=False)
+    User_Name = Column(String(250), nullable=False)
     Password = Column(String(88), nullable=False)
-    First = Column(String(25), nullable=False)
-    Last = Column(String(25), nullable=False)
-    Email = Column(String(25), nullable=False)
-    Profile_Pic = Column(String(25), nullable=True)
+    First = Column(String(250), nullable=False)
+    Last = Column(String(250), nullable=False)
+    Email = Column(String(250), nullable=False)
+    Profile_Pic = Column(String(250), nullable=True)
     Google_ID = Column(String(25), nullable=True)
     Logged_In = Column(Boolean, default=False)
 
@@ -33,10 +33,10 @@ class Item(Base):
     ID = Column(Integer, primary_key=True)
     Owner_ID = Column(Integer, ForeignKey('User.ID'))
     Owner = relationship(User)
-    Name = Column(String(25), nullable=False)
-    Category = Column(String(25), nullable=False)
-    Description = Column(String(300), nullable=True)
-    Image = Column(String(100), nullable=True)
+    Name = Column(String(250), nullable=False)
+    Category = Column(String(250), nullable=False)
+    Description = Column(String(3000), nullable=True)
+    Image = Column(String(250), nullable=True)
 
     @property
     def serialize(self):
@@ -53,7 +53,7 @@ class Item(Base):
 
 
 def Create_Data_Base():
-    Engine = create_engine('postgresql:///catalog')
+    Engine = create_engine('postgresql://grader:Udacity@localhost/catalog')
     Base.metadata.create_all(Engine)
 
 

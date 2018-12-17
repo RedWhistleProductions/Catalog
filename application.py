@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 try:
     #print("Loading Database Catalog.db ...")
-    Engine = create_engine('postgresql:///catalog')
+    Engine = create_engine('postgresql://grader:Udacity@localhost/catalog')
     Base.metadata.bind = Engine
     DBSession = sessionmaker(bind=Engine)
     Session = DBSession()
@@ -354,7 +354,7 @@ def Delete_Profile():
 @app.route('/Log_In/', methods=['GET', 'POST'])
 def Log_In(
     DATA_SCOPE="openid email",
-        Client_Secret="Item-Catalog-Google-Oauth.json",
+        Client_Secret="/var/www/flask/Catalog/Item-Catalog-Google-Oauth.json",
         data_Approvalprompt="force"):
 
     if request.method == "POST":
@@ -589,7 +589,7 @@ def good_file(File, Allowed_Type="raster-image"):
     return info.type_matches(Allowed_Type)
 
 
-def upload(file, subfolder='./static', file_type="raster-image"):
+def upload(file, subfolder='/var/www/flask/Catalog/static', file_type="raster-image"):
     """
     Scans the magic number of a user uploaded file to make sure it is an image
     file if it is then upload saves the file and returns the path on the server
@@ -621,12 +621,11 @@ def delete_file(file_name, subfolder='static/'):
     os.remove(path)
 
 
-if __name__ == '__main__':
-    app.secret_key = os.urandom(24)
-    app.debug = True
-    APP_ROOT = os.path.dirname(sys.modules['__main__'].__file__)
-    Google_Oauth2.init(app, Flask_Session, "Item-Catalog-Google-Oauth.json")
 
+app.secret_key = os.urandom(24)
+Google_Oauth2.init(app, Flask_Session, "/var/www/flask/Catalog/Item-Catalog-Google-Oauth.json")
+if __name__ == '__main__':
+    APP_ROOT = os.path.dirname(sys.modules['__main__'].__file__)
     if platform.system() == "Linux":
         app.run(host='0.0.0.0', port=8000)
     else:
